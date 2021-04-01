@@ -1,0 +1,28 @@
+version: '3.8'
+
+services: 
+  back-c:
+    image: sereme98/backend2
+    ports: 
+      - 8089:8089
+    environment: 
+      DATABASE_URL: http://admin:password@db:5984
+    depends_on: 
+      - db
+
+  front-c:
+    image: sereme98/frontend2
+    ports:
+      - 8080:8080
+    environment:
+      BACKEND_HOST: back-c
+      API_URL: http://"+BACKEND_HOST+":8089/
+    depends_on: 
+      - back-c 
+  db:
+    image: sereme98/couchdb-icesi
+    ports:
+     - 5984:5984 
+    environment: 
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: password
